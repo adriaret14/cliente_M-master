@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cliente M-master API</title>
+	<link href="estilo.css" rel="stylesheet" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script>
+	$(document).ready(function(){
+		//alert("Hola");
+		$("#formul").hide();
+		$("#resultado").hide();
+
+		$("#mostrar").click(function(){
+			//alert("Ha");
+			$("#formul").hide();
+			$("#resultado").show();
+			$("#resultado").html("");
+			var cadena="localhost/M-master/api/users/";
+			//alert(cadena);
+			$.ajax({
+				type:'GET',
+				url:"http://localhost/M-master/api/users/",
+				dataType:'json',
+				success:function(x){
+					$("#resultado").append('<table border="1">');
+					$("table").append("<tr><th>Nickname</th><th>Email</th><th>Nombre</th><th>Apellidos</th><th>Telefono</th></tr>");
+					for(i=0;i<x.length;i++)
+					{
+						//alert(x[i].nickname);
+						$("table").append("<tr><td>"+x[i].nickname+"</td><td>"+x[i].email+"</td><td>"+x[i].nombre+"</td><td>"+x[i].apellidos+"</td><td>"+x[i].telefono+"</td></tr>");
+					}
+					$("#resultado").append("</table>");
+				}
+
+			});
+		});
+		$("#ingresar").click(function(){
+			//alert("Ha");
+			$("#formul").show();
+			$("#resultado").hide();
+			$("#resultado").html("");
+			
+
+			$("#go").click(function(){
+				var cadena="localhost/M-master/api/users/";
+
+				var v1=$('input[name=nickname]').val();
+				var v2=$('input[name=contra]').val();
+				var v3=$('input[name=email]').val();
+				var v4=$('input[name=nombre]').val();
+				var v5=$('input[name=apellidos]').val();
+				var v6=$('input[name=telefono]').val();
+				var v7=1;
+
+				$.ajax({
+				type:'POST',
+				url:'http://localhost/M-master/api/users/',
+				data:{"nickname":v1, "contra":v2, "email":v3, "nombre":v4, "apellidos":v5, "telefono":v6, "ciudad":v7},
+				success:function(){
+						alert("Done");
+					}
+				});
+			});
+		});
+	});
+	</script>
+</head>
+<body>
+	<div id="header"><h2>Welcome to M-master</h2></div>
+
+	<div id="cuerpo">
+		<div class="but" id="mostrar"><h5>Mostrar usuarios</h5></div>
+		<div class="but" id="ingresar"><h5>Ingresar usuarios</h5></div>
+
+		<div id="formul">
+			<form id="f1" name="f1" method="POST">
+				<input type="text" name="nickname" placeholder="nickname"><br>
+				<input type="text" name="contra" placeholder="password"><br>
+				<input type="text" name="email" placeholder="email"><br>
+				<input type="text" name="nombre" placeholder="nombre"><br>
+				<input type="text" name="apellidos" placeholder="apellidos"><br>
+				<input type="text" name="telefono" placeholder="telefono"><br>
+				<input type="button" id="go" name="go" value="Send">
+			</form>
+		</div>
+
+		<div id="resultado"></div>
+	</div>
+	
+
+	<div id="footer"></div>
+</body>
+</html>
